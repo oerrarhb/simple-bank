@@ -1,12 +1,17 @@
 package com.othmane.simplebank.model;
 
-import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@AllArgsConstructor
+@Document(collection = "accounts")
 public class Account {
     @Id
     private String id;
-    private final Long ClientId;
+    private final String ClientId;
     private final double balance;
+
+    public Account(String clientId, double balance) {
+        ClientId = clientId;
+        this.balance = balance;
+    }
 }
