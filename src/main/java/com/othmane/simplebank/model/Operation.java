@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Operation {
     @Id
     private String id;
+    private String accountId;
     private final OperationType operationType;
     private final double transactionAmount;
 
