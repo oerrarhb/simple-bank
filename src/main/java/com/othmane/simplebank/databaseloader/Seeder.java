@@ -19,7 +19,7 @@ public class Seeder {
     private final DeleteService deleteService;
 
     public void save() {
-        var daryClient = new Client("Daryl",
+        var darylDixon = new Client("Daryl",
                 "Dixon",
                 "777-444-888",
                 "dd@outlook.com",
@@ -27,11 +27,22 @@ public class Seeder {
                 List.of(new Account(100000.00,
                         List.of(new Operation(OperationType.CREDIT, 20000),
                                 new Operation(OperationType.CREDIT, 5000)))));
-        savingService.saveClient(daryClient);
+        savingService.saveClient(darylDixon);
+
+
+        var jhonWick = new Client("Jhon",
+                "Wick",
+                "899-444-888",
+                "jw@outlook.com",
+                "New-York",
+                List.of(new Account(900000.00,
+                        List.of(new Operation(OperationType.CREDIT, 20000),
+                                new Operation(OperationType.DEBIT, 5000)))));
+        savingService.saveClient(jhonWick);
+
     }
 
-    public void deleteAll()
-    {
+    public void deleteAll() {
         deleteService.purge();
     }
 

@@ -52,15 +52,20 @@ public class OperationController {
 
     private void updateAccount(String operationId, String accountId) {
         var account = accountRepository.findById(accountId).orElse(null);
-        account.getOperationList().removeIf(op -> op.getId().equals(operationId));
-        mongoTemplate.save(account);
-        updateClient(account);
+        if (account != null) {
+            account.getOperationList().removeIf(op -> op.getId().equals(operationId));
+            mongoTemplate.save(account);
+            updateClient(account);
+        }
+
     }
 
     private void updateClient(Account account) {
         var client = clientRepository.findById(account.getClientId()).orElse(null);
-        client.getAccounts().removeIf(acc -> acc.getId().equals(account.getId()));
-        client.getAccounts().add(account);
-        mongoTemplate.save(client);
+        if (client != null) {
+            client.getAccounts().removeIf(acc -> acc.getId().equals(account.getId()));
+            client.getAccounts().add(account);
+            mongoTemplate.save(client);
+        }
     }
 }
