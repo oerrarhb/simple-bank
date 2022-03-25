@@ -19,7 +19,7 @@ public class Client {
     private final String phoneNumber;
     private final String email;
     private final String address;
-    private final List<Account> accounts;
+    private List<Account> accounts;
 
     public Client(String firstName, String lastName, String phoneNumber, String email, String address, List<Account> accounts) {
         this.firstName = firstName;

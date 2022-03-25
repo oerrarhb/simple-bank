@@ -16,7 +16,7 @@ public class Account {
     private String id;
     private String ClientId;
     private final double balance;
-    private final List<Operation> operationList;
+    private List<Operation> operationList;
 
     public Account(double balance, List<Operation> operationList) {
         this.balance = balance;
