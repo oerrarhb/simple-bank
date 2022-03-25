@@ -2,6 +2,7 @@ package com.othmane.simplebank.controller;
 
 import com.othmane.simplebank.model.Client;
 import com.othmane.simplebank.repositories.ClientRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/clients")
 public class ClientController {
@@ -19,13 +21,10 @@ public class ClientController {
     @Autowired
     private final ClientRepository clientRepository;
 
-    public ClientController(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
 
     @GetMapping("/getAllClients")
     public ResponseEntity<List<Client>> getClients() {
-        var clients = this.clientRepository.findAll();
+        var clients = clientRepository.findAll();
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
