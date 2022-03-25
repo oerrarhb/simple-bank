@@ -55,8 +55,8 @@ public class OperationController {
     public ResponseEntity<Operation> addOperation(@RequestBody Operation operation) {
         if (isOperationTypeCoherent(operation)) {
             var savedOperation = operationRepository.insert(operation);
-            updateAccountOnPost(savedOperation);
-            return new ResponseEntity<>(savedOperation, HttpStatus.OK);
+            var accountExist = updateAccountOnPost(savedOperation);
+            return accountExist ? new ResponseEntity<>(savedOperation, HttpStatus.BAD_REQUEST) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +67,7 @@ public class OperationController {
         return type.equals(OperationType.CREDIT) || type.equals(OperationType.DEBIT);
     }
 
-    private void updateAccountOnPost(Operation operation) {
+    private boolean updateAccountOnPost(Operation operation) {
         var account = accountRepository.findById(operation.getAccountId()).orElse(null);
         if (account != null) {
             if (operation.getOperationType().equals(OperationType.CREDIT)) {
@@ -78,7 +78,9 @@ public class OperationController {
             account.getOperationList().add(operation);
             mongoTemplate.save(account);
             updateClient(account);
+            return true;
         }
+        return false;
     }
 
 
