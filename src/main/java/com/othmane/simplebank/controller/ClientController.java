@@ -2,6 +2,7 @@ package com.othmane.simplebank.controller;
 
 import com.othmane.simplebank.model.Account;
 import com.othmane.simplebank.model.Client;
+import com.othmane.simplebank.model.Operation;
 import com.othmane.simplebank.repositories.AccountRepository;
 import com.othmane.simplebank.repositories.ClientRepository;
 import com.othmane.simplebank.repositories.OperationRepository;
@@ -50,6 +51,17 @@ public class ClientController {
         return new ResponseEntity<>(false, HttpStatus.OK);
     }
 
+    @PostMapping("/addClient")
+    public ResponseEntity<Client> addClient(@RequestBody Client client) {
+        for (Account account : client.getAccounts()) {
+            for (Operation operation : account.getOperationList()) {
+                operationRepository.insert(operation);
+            }
+            accountRepository.insert(account);
+        }
+        return new ResponseEntity<>(clientRepository.insert(client), HttpStatus.OK);
+    }
+
     private void updateAccountsAndOperations(String clientId) {
         var accounts = accountRepository
                 .findAll()
@@ -65,5 +77,4 @@ public class ClientController {
         accountRepository.deleteAll(accounts);
         operationRepository.deleteAll(operations);
     }
-
 }

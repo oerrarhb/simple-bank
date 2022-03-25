@@ -2,6 +2,7 @@ package com.othmane.simplebank.controller;
 
 import com.othmane.simplebank.model.Account;
 import com.othmane.simplebank.model.Operation;
+import com.othmane.simplebank.model.OperationType;
 import com.othmane.simplebank.repositories.AccountRepository;
 import com.othmane.simplebank.repositories.ClientRepository;
 import com.othmane.simplebank.repositories.OperationRepository;
@@ -44,21 +45,52 @@ public class OperationController {
     public ResponseEntity<Boolean> deleteOperation(@PathVariable("id") String operationId) {
         var operation = operationRepository.findById(operationId).orElse(null);
         if (operation != null) {
-            updateAccount(operationId, operation.getAccountId());
+            updateAccountOnDelete(operationId, operation.getAccountId());
         }
         operationRepository.deleteById(operationId);
         return new ResponseEntity<>(!(operationRepository.findById(operationId).isPresent()), HttpStatus.OK);
     }
 
-    private void updateAccount(String operationId, String accountId) {
+    @PostMapping("/addOperation")
+    public ResponseEntity<Operation> addOperation(@RequestBody Operation operation) {
+        if (isOperationTypeCoherent(operation)) {
+            var savedOperation = operationRepository.insert(operation);
+            updateAccountOnPost(savedOperation);
+            return new ResponseEntity<>(savedOperation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private boolean isOperationTypeCoherent(Operation operation) {
+        var type = operation.getOperationType();
+        return type.equals(OperationType.CREDIT) || type.equals(OperationType.DEBIT);
+    }
+
+    private void updateAccountOnPost(Operation operation) {
+        var account = accountRepository.findById(operation.getAccountId()).orElse(null);
+        if (account != null) {
+            if (operation.getOperationType().equals(OperationType.CREDIT)) {
+                account.setBalance(account.getBalance() + operation.getTransactionAmount());
+            } else {
+                account.setBalance(account.getBalance() - operation.getTransactionAmount());
+            }
+            account.getOperationList().add(operation);
+            mongoTemplate.save(account);
+            updateClient(account);
+        }
+    }
+
+
+    private void updateAccountOnDelete(String operationId, String accountId) {
         var account = accountRepository.findById(accountId).orElse(null);
         if (account != null) {
             account.getOperationList().removeIf(op -> op.getId().equals(operationId));
             mongoTemplate.save(account);
             updateClient(account);
         }
-
     }
+
 
     private void updateClient(Account account) {
         var client = clientRepository.findById(account.getClientId()).orElse(null);

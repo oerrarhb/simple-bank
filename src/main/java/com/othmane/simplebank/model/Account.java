@@ -15,7 +15,7 @@ public class Account {
     @Id
     private String id;
     private String ClientId;
-    private final double balance;
+    private double balance;
     private List<Operation> operationList;
 
     public Account(double balance, List<Operation> operationList) {

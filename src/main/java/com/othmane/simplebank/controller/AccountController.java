@@ -52,6 +52,19 @@ public class AccountController {
         }
     }
 
+    @PostMapping("/addAccount")
+    public ResponseEntity<Account> addAccount(@RequestBody Account account) {
+        var client = clientRepository.findById(account.getClientId()).orElse(null);
+        if (client != null) {
+            var accountSaved = accountRepository.insert(account);
+            client.getAccounts().add(accountSaved);
+            mongoTemplate.save(client);
+            return new ResponseEntity<>(account, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private void updateClients(String clientId, String accountId) {
         var client = clientRepository.findById(clientId).orElse(null);
         if (client != null) {
