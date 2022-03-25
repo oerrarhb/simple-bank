@@ -8,6 +8,7 @@ import com.othmane.simplebank.repositories.ClientRepository;
 import com.othmane.simplebank.repositories.OperationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class ClientController {
     private final AccountRepository accountRepository;
     @Autowired
     private final OperationRepository operationRepository;
+    @Autowired
+    private final MongoTemplate mongoTemplate;
 
 
     @GetMapping("/getAllClients")
@@ -60,6 +63,36 @@ public class ClientController {
             accountRepository.insert(account);
         }
         return new ResponseEntity<>(clientRepository.insert(client), HttpStatus.OK);
+    }
+
+    @PutMapping("/updateClient/{id}")
+    public ResponseEntity<Client> updateClient(@PathVariable("id") String clientId, @RequestBody Client client) {
+        var clientInDB = clientRepository.findById(clientId);
+        if (clientInDB.isPresent()) {
+            var clientToMerge = clientInDB.get();
+            mergeOnUpdate(clientToMerge, client);
+            return new ResponseEntity<>(clientToMerge, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    private void mergeOnUpdate(Client clientInDB, Client client) {
+        if (client.getFirstName() != null) {
+            clientInDB.setFirstName(client.getFirstName());
+        }
+        if (client.getLastName() != null) {
+            clientInDB.setLastName(client.getLastName());
+        }
+        if (client.getPhoneNumber() != null) {
+            clientInDB.setPhoneNumber(client.getPhoneNumber());
+        }
+        if (client.getEmail() != null) {
+            clientInDB.setEmail(client.getEmail());
+        }
+        if (client.getAddress() != null) {
+            clientInDB.setAddress(client.getAddress());
+        }
+        mongoTemplate.save(clientInDB);
     }
 
     private void updateAccountsAndOperations(String clientId) {

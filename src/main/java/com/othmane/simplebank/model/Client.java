@@ -14,11 +14,11 @@ import java.util.List;
 public class Client {
     @Id
     private String id;
-    private final String firstName;
-    private final String lastName;
-    private final String phoneNumber;
-    private final String email;
-    private final String address;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
+    private String address;
     private List<Account> accounts;
 
     public Client(String firstName, String lastName, String phoneNumber, String email, String address, List<Account> accounts) {

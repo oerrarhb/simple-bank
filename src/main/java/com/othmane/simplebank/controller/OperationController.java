@@ -25,7 +25,6 @@ public class OperationController {
     private final AccountRepository accountRepository;
     @Autowired
     private final ClientRepository clientRepository;
-
     @Autowired
     private final MongoTemplate mongoTemplate;
 
