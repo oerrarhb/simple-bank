@@ -6,27 +6,22 @@ import com.othmane.simplebank.model.Operation;
 import com.othmane.simplebank.repositories.AccountRepository;
 import com.othmane.simplebank.repositories.ClientRepository;
 import com.othmane.simplebank.repositories.OperationRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class SavingService {
     @Autowired
-    private OperationRepository operationRepository;
+    private final AccountRepository accountRepository;
     @Autowired
-    private AccountRepository accountRepository;
+    private final ClientRepository clientRepository;
     @Autowired
-    private ClientRepository clientRepository;
-
-    public SavingService(OperationRepository operationRepository, AccountRepository accountRepository, ClientRepository clientRepository) {
-        this.operationRepository = operationRepository;
-        this.accountRepository = accountRepository;
-        this.clientRepository = clientRepository;
-    }
-
+    private final OperationRepository operationRepository;
 
     private List<Operation> findOperationByAccountId(String accountId) {
         return operationRepository.findAll().stream().filter(op -> op.getAccountId().equals(accountId)).collect(Collectors.toList());

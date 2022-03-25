@@ -4,6 +4,7 @@ import com.othmane.simplebank.databaseloader.Seeder;
 import com.othmane.simplebank.repositories.AccountRepository;
 import com.othmane.simplebank.repositories.ClientRepository;
 import com.othmane.simplebank.repositories.OperationRepository;
+import com.othmane.simplebank.services.DeleteService;
 import com.othmane.simplebank.services.SavingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,7 +26,10 @@ public class SimplebankApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        var databaseLoader = new Seeder(new SavingService(operationRepository, accountRepository, clientRepository));
+        var deleteService = new DeleteService(accountRepository, clientRepository, operationRepository);
+        var savingService = new SavingService(accountRepository, clientRepository, operationRepository);
+        var databaseLoader = new Seeder(savingService, deleteService);
+        deleteService.purge();
         databaseLoader.save();
     }
 }
