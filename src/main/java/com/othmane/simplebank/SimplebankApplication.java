@@ -25,7 +25,7 @@ public class SimplebankApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        var databaseLoader = new Seeder(new SavingService(operationRepository, accountRepository, clientRepository));
-        databaseLoader.save();
+        //var databaseLoader = new Seeder(new SavingService(operationRepository, accountRepository, clientRepository));
+        //databaseLoader.save();
     }
 }
