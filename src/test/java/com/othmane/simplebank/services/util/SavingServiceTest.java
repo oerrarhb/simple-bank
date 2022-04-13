@@ -1,4 +1,4 @@
-package com.othmane.simplebank.services;
+package com.othmane.simplebank.services.util;
 
 import com.othmane.simplebank.model.Account;
 import com.othmane.simplebank.model.Client;
@@ -54,12 +54,11 @@ class SavingServiceTest {
     @DisplayName("Save Account Test")
     @Test
     public void canSaveAccount() {
-        var account = Account.builder()
-                .id("1234")
-                .balance(10000.00)
-                .ClientId("112255")
-                .operationList(new ArrayList<>())
-                .build();
+        var account = new Account();
+        account.setId("1234");
+        account.setBalance(10000.00);
+        account.setClientId("112255");
+        account.setOperationList(new ArrayList<>());
         savingService.saveAccount(account);
         ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountArgumentCaptor.capture());
@@ -70,15 +69,15 @@ class SavingServiceTest {
     @DisplayName("Save Client Test")
     @Test
     public void canSaveClient() {
-        var client = Client.builder()
-                .id("1234")
-                .firstName("Daryl")
-                .lastName("DIXON")
-                .phoneNumber("00 55 88 66 77")
-                .email("dd@email.com")
-                .address("73 Street Of the Walking Dead Alexandria")
-                .accounts(new ArrayList<>())
-                .build();
+        var client = new Client();
+        client.setId("1234");
+        client.setFirstName("Daryl");
+        client.setLastName("DIXON");
+        client.setPhoneNumber("00 55 88 66 77");
+        client.setEmail("dd@email.com");
+        client.setAddress("73 Street Of the Walking Dead Alexandria");
+        client.setAccounts(new ArrayList<>());
+
         savingService.saveClient(client);
         ArgumentCaptor<Client> clientArgumentCaptor = ArgumentCaptor.forClass(Client.class);
         verify(clientRepository).save(clientArgumentCaptor.capture());

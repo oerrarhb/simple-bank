@@ -1,4 +1,4 @@
-package com.othmane.simplebank.services;
+package com.othmane.simplebank.services.util;
 
 import com.othmane.simplebank.repositories.AccountRepository;
 import com.othmane.simplebank.repositories.ClientRepository;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-class DeleteServiceTest {
+class PurgeServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
@@ -24,11 +24,11 @@ class DeleteServiceTest {
     @Mock
     private OperationRepository operationRepository;
 
-    private DeleteService deleteService;
+    private PurgeService deleteService;
 
     @BeforeEach
     void setUp() {
-        deleteService = new DeleteService(accountRepository, clientRepository, operationRepository);
+        deleteService = new PurgeService(accountRepository, clientRepository, operationRepository);
     }
 
     @DisplayName("Test all beans deleting")

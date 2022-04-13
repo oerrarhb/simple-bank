@@ -1,4 +1,4 @@
-package com.othmane.simplebank.services;
+package com.othmane.simplebank.services.util;
 
 import com.othmane.simplebank.repositories.AccountRepository;
 import com.othmane.simplebank.repositories.ClientRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class DeleteService {
+public class PurgeService {
 
     @Autowired
     private final AccountRepository accountRepository;

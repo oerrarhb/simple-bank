@@ -4,8 +4,8 @@ import com.othmane.simplebank.model.Account;
 import com.othmane.simplebank.model.Client;
 import com.othmane.simplebank.model.Operation;
 import com.othmane.simplebank.model.OperationType;
-import com.othmane.simplebank.services.DeleteService;
-import com.othmane.simplebank.services.SavingService;
+import com.othmane.simplebank.services.util.PurgeService;
+import com.othmane.simplebank.services.util.SavingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class Seeder {
 
     private final SavingService savingService;
-    private final DeleteService deleteService;
+    private final PurgeService deleteService;
 
     public void save() {
         var darylDixon = new Client("Daryl",

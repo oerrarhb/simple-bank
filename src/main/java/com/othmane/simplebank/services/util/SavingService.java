@@ -1,4 +1,4 @@
-package com.othmane.simplebank.services;
+package com.othmane.simplebank.services.util;
 
 import com.othmane.simplebank.model.Account;
 import com.othmane.simplebank.model.Client;
