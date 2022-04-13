@@ -23,15 +23,15 @@ public class SavingService {
     @Autowired
     private final OperationRepository operationRepository;
 
-    private List<Operation> findOperationByAccountId(String accountId) {
+    List<Operation> findOperationByAccountId(String accountId) {
         return operationRepository.findAll().stream().filter(op -> op.getAccountId().equals(accountId)).collect(Collectors.toList());
     }
 
-    private List<Account> findAccountByClientId(String clientId) {
+    List<Account> findAccountByClientId(String clientId) {
         return accountRepository.findAll().stream().filter(acc -> acc.getClientId().equals(clientId)).collect(Collectors.toList());
     }
 
-    private void saveAccount(Account account) {
+    void saveAccount(Account account) {
         try {
             var accountSaved = accountRepository.save(account);
             for (var operation : account.getOperationList()) {
